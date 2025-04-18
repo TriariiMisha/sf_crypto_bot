@@ -172,3 +172,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+.idea
+.DS_Store
+data/*
+localdb
+sources/db.ini
+temp/*
