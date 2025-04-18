@@ -5,9 +5,6 @@ from time import sleep
 from bot.args_parser.args import Duration
 from bot.args_parser.parser import parser
 from bot.consts import RPS_LIMIT
-from bot.data_handler.handlers import PickleDataHandler
-from bot.requester.requesters import HTTPRequester
-from bot.task_manager.managers import SimpleTaskManager
 from bot.utils import get_time_to_sleep, get_timestamp
 
 
@@ -49,15 +46,6 @@ class Collector:
         print(f'\t duration: {self.seconds} seconds')
 
     def run(self):
-        # get requester
-        requester = HTTPRequester(headers=dict())
-
-        # get data handler
-        data_handler = PickleDataHandler()
-
-        # get runs mapper
-        task_manager = SimpleTaskManager()
-
         # run
         ts_current = get_timestamp(datetime.now())
         ts_to_finish = ts_current + self.seconds
@@ -67,15 +55,3 @@ class Collector:
         print(
             f'[MVP] due to rps limit {RPS_LIMIT} sleep interval is {seconds_to_sleep:.2f} (real rps is {real_rps})'
         )
-
-        while ts_to_finish > ts_current:
-            sync_ts = get_timestamp(datetime.now(), units='ns')
-            results = task_manager.map(requester.get, self.tickers, sync_ts=sync_ts)
-            data_handler.write(results)
-
-            sleep(seconds_to_sleep)
-
-            ts_current = get_timestamp(datetime.now())
-
-        # close all connections
-        requester.close()
