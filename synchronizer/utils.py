@@ -1,4 +1,6 @@
+import asyncio
 import pickle
+import aiofiles
 from configparser import ConfigParser
 
 import pandas as pd
@@ -45,15 +47,17 @@ def execute_values(conn, df, table):
         cursor.close()
 
 
-def process_file(path: str) -> list:
-    with open(path, 'rb') as file:
-        record = pickle.load(file)
+async def process_file(path: str) -> list:
+    async with aiofiles.open(path, 'rb') as file:
+        record_serialized = await file.read()
+        record = pickle.loads(record_serialized)
 
-        return record
+    return record
 
 
-def prepare_df(paths):
-    items = [process_file(path) for path in paths]
+async def prepare_df(paths):
+    tasks = [process_file(path) for path in paths]
+    items = await asyncio.gather(*tasks)
 
     # flatten results
     items_flatten = []

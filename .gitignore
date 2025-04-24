@@ -179,3 +179,4 @@ data/*
 localdb
 sources/db.ini
 temp/*
+helper.py

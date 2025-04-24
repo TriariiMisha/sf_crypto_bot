@@ -2,7 +2,7 @@ import re
 
 RPS_LIMIT = 120
 DURATION_PATTERN = re.compile('\d+\.*\d*[d|h|m|s]')
-REST_URL = 'https://api.bybit.com/v5/market/orderbook?category=spot&limit=1'
+REST_URL = 'https://api.bybit.com/v5/market/orderbook?symbol={symbol}&category={category}&limit=1'
 
 TIME_CONFIG = {
     's': 10**0,

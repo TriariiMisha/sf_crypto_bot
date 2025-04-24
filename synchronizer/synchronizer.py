@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import asyncio
 
 from utils import execute_values, get_db_connection, prepare_df
 
@@ -12,7 +13,7 @@ TABLE = 'public.bybit_records'
 
 # get and process files
 tmp_files = [f'{TEMP_DIR}/{name}' for name in os.listdir(TEMP_DIR)]
-results_df = prepare_df(tmp_files)
+results_df = asyncio.run(prepare_df(tmp_files))
 
 # establish connection and write to DB
 connection = get_db_connection(DB_PATH)

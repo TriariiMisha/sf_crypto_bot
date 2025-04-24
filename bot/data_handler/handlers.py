@@ -1,3 +1,4 @@
+import logging
 import os
 import pickle
 from abc import ABC, abstractmethod
@@ -27,7 +28,7 @@ class PickleDataHandler(DataHandler):
         with open(filepath, 'wb') as file:
             pickle.dump(items, file)
 
-        print(f'[DATA HANDLER] items are saved to file {filepath}...')
+        logging.info(f'[DATA HANDLER] items are saved to file {filepath}...')
 
 
 class CsvDataHandler(DataHandler):
